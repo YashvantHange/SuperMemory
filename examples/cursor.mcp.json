@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "supermemory": {
+      "command": "python",
+      "args": ["-m", "supermemory_mcp.server", "--storage", ".supermemory", "--transport", "stdio"],
+      "env": {
+        "PYTHONPATH": "src;packages;."
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+from typing import Protocol
+
+
+class LLMProvider(Protocol):
+    async def complete(self, prompt: str, max_tokens: int = 500) -> str: ...
+    async def embed(self, text: str) -> list[float]: ...

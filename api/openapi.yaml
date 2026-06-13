@@ -1,0 +1,41 @@
+openapi: 3.0.3
+info:
+  title: UALL API
+  version: 0.1.0
+paths:
+  /health:
+    get:
+      summary: Health check
+  /runs/start:
+    post:
+      summary: Start a run
+  /runs/event:
+    post:
+      summary: Record selective event
+  /runs/end:
+    post:
+      summary: End a run
+  /memory/search:
+    post:
+      summary: Hybrid retrieval pipeline
+  /memory/validate:
+    post:
+      summary: Validate candidate lesson
+  /promotion/process:
+    post:
+      summary: Process promotion queue
+  /telemetry/lesson-outcome:
+    post:
+      summary: Report retrieval telemetry
+  /recommendations:
+    post:
+      summary: Get recommendations
+  /experiments/start:
+    post:
+      summary: Start A/B experiment
+  /rollback:
+    post:
+      summary: Rollback resource version
+  /analytics:
+    get:
+      summary: Analytics summary
