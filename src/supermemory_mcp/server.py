@@ -9,6 +9,12 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from mcp.types import ToolAnnotations
+
+_RO = ToolAnnotations(readOnlyHint=True, destructiveHint=False)
+_RW = ToolAnnotations(readOnlyHint=False, destructiveHint=False)
+_DX = ToolAnnotations(readOnlyHint=False, destructiveHint=True)
+
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "packages"))
@@ -33,7 +39,7 @@ def build_server(storage_root: str | None = None):
         raw = await handle_tool(name, arguments or {}, data_dir=data_dir)
         return json.loads(raw)
 
-    @mcp.tool(name="record_event")
+    @mcp.tool(name="record_event", annotations=_RW)
     async def record_event(
         event_type: str,
         summary: str,
@@ -65,7 +71,7 @@ def build_server(storage_root: str | None = None):
             },
         )
 
-    @mcp.tool(name="record_failure")
+    @mcp.tool(name="record_failure", annotations=_RW)
     async def record_failure(
         summary: str,
         workflow: str | None = None,
@@ -95,7 +101,7 @@ def build_server(storage_root: str | None = None):
             },
         )
 
-    @mcp.tool(name="record_correction")
+    @mcp.tool(name="record_correction", annotations=_RW)
     async def record_correction(
         summary: str,
         workflow: str | None = None,
@@ -125,7 +131,7 @@ def build_server(storage_root: str | None = None):
             },
         )
 
-    @mcp.tool(name="reflect")
+    @mcp.tool(name="reflect", annotations=_RW)
     async def reflect(
         event_ids: list[str],
         suggestion: str | None = None,
@@ -137,7 +143,7 @@ def build_server(storage_root: str | None = None):
             {"event_ids": event_ids, "suggestion": suggestion, "lesson_text": lesson_text},
         )
 
-    @mcp.tool(name="validate")
+    @mcp.tool(name="validate", annotations=_RW)
     async def validate(
         reflection_id: str | None = None,
         candidate_lesson: str | None = None,
@@ -155,12 +161,12 @@ def build_server(storage_root: str | None = None):
             },
         )
 
-    @mcp.tool(name="process_promotions")
+    @mcp.tool(name="process_promotions", annotations=_RW)
     async def process_promotions(limit: int = 50) -> dict[str, Any]:
         """Process pending validated lessons and promote passing items."""
         return await _call("process_promotions", {"limit": limit})
 
-    @mcp.tool(name="retrieve")
+    @mcp.tool(name="retrieve", annotations=_RO)
     async def retrieve(
         query: str,
         workflow: str | None = None,
@@ -192,7 +198,7 @@ def build_server(storage_root: str | None = None):
             },
         )
 
-    @mcp.tool(name="report_outcome")
+    @mcp.tool(name="report_outcome", annotations=_RW)
     async def report_outcome(
         lesson_id: str,
         used: bool,
@@ -214,17 +220,17 @@ def build_server(storage_root: str | None = None):
             },
         )
 
-    @mcp.tool(name="get_policies")
+    @mcp.tool(name="get_policies", annotations=_RO)
     async def get_policies(namespace: str = "global") -> dict[str, Any]:
         """Return active policies visible to a namespace."""
         return await _call("get_policies", {"namespace": namespace})
 
-    @mcp.tool(name="add_policy")
+    @mcp.tool(name="add_policy", annotations=_RW)
     async def add_policy(rule: str, namespace: str = "global", priority: int = 100) -> dict[str, Any]:
         """Add a local policy rule."""
         return await _call("add_policy", {"rule": rule, "namespace": namespace, "priority": priority})
 
-    @mcp.tool(name="add_skill")
+    @mcp.tool(name="add_skill", annotations=_RW)
     async def add_skill(
         name: str,
         description: str,
@@ -250,7 +256,7 @@ def build_server(storage_root: str | None = None):
             },
         )
 
-    @mcp.tool(name="search_skills")
+    @mcp.tool(name="search_skills", annotations=_RO)
     async def search_skills(
         query: str,
         workflow: str | None = None,
@@ -263,12 +269,12 @@ def build_server(storage_root: str | None = None):
             {"query": query, "workflow": workflow, "namespace": namespace, "top_k": top_k},
         )
 
-    @mcp.tool(name="get_skill")
+    @mcp.tool(name="get_skill", annotations=_RO)
     async def get_skill(skill_id: str) -> dict[str, Any]:
         """Read a reusable skill by ID."""
         return await _call("get_skill", {"skill_id": skill_id})
 
-    @mcp.tool(name="learn.run.start")
+    @mcp.tool(name="learn.run.start", annotations=_RW)
     async def learn_run_start(
         workflow_id: str,
         step: str | None = None,
@@ -287,7 +293,7 @@ def build_server(storage_root: str | None = None):
             },
         )
 
-    @mcp.tool(name="learn.run.event")
+    @mcp.tool(name="learn.run.event", annotations=_RW)
     async def learn_run_event(
         run_id: str,
         event_type: str,
@@ -316,7 +322,7 @@ def build_server(storage_root: str | None = None):
             },
         )
 
-    @mcp.tool(name="learn.run.end")
+    @mcp.tool(name="learn.run.end", annotations=_RW)
     async def learn_run_end(
         run_id: str,
         success: bool,
@@ -327,11 +333,11 @@ def build_server(storage_root: str | None = None):
             {"run_id": run_id, "success": success, "lessons_used": lessons_used or []},
         )
 
-    @mcp.tool(name="learn.store")
+    @mcp.tool(name="learn.store", annotations=_RW)
     async def learn_store(lesson_json: str) -> dict[str, Any]:
         return await _call("learn.store", {"lesson_json": lesson_json})
 
-    @mcp.tool(name="learn.retrieve")
+    @mcp.tool(name="learn.retrieve", annotations=_RO)
     async def learn_retrieve(
         query: str,
         workflow: str | None = None,
@@ -350,7 +356,7 @@ def build_server(storage_root: str | None = None):
             },
         )
 
-    @mcp.tool(name="learn.reflect")
+    @mcp.tool(name="learn.reflect", annotations=_RW)
     async def learn_reflect(
         event_ids: list[str] | None = None,
         suggestion: str | None = None,
@@ -375,7 +381,7 @@ def build_server(storage_root: str | None = None):
             },
         )
 
-    @mcp.tool(name="learn.validate")
+    @mcp.tool(name="learn.validate", annotations=_RW)
     async def learn_validate(
         failure: str,
         fix: str,
@@ -392,11 +398,11 @@ def build_server(storage_root: str | None = None):
             },
         )
 
-    @mcp.tool(name="learn.evaluate")
+    @mcp.tool(name="learn.evaluate", annotations=_RO)
     async def learn_evaluate(run_id: str) -> dict[str, Any]:
         return await _call("learn.evaluate", {"run_id": run_id})
 
-    @mcp.tool(name="learn.feedback")
+    @mcp.tool(name="learn.feedback", annotations=_RW)
     async def learn_feedback(
         rating: str,
         comment: str | None = None,
@@ -407,7 +413,7 @@ def build_server(storage_root: str | None = None):
             {"rating": rating, "comment": comment, "run_id": run_id},
         )
 
-    @mcp.tool(name="learn.improvements")
+    @mcp.tool(name="learn.improvements", annotations=_RO)
     async def learn_improvements(
         workflow_id: str | None = None,
         agent_id: str | None = None,
@@ -417,15 +423,15 @@ def build_server(storage_root: str | None = None):
             {"workflow_id": workflow_id, "agent_id": agent_id},
         )
 
-    @mcp.tool(name="learn.analytics")
+    @mcp.tool(name="learn.analytics", annotations=_RO)
     async def learn_analytics() -> dict[str, Any]:
         return await _call("learn.analytics", {})
 
-    @mcp.tool(name="learn.policies")
+    @mcp.tool(name="learn.policies", annotations=_RO)
     async def learn_policies() -> dict[str, Any]:
         return await _call("learn.policies", {})
 
-    @mcp.tool(name="learn.experiment")
+    @mcp.tool(name="learn.experiment", annotations=_RW)
     async def learn_experiment(
         resource_id: str,
         variant_b: str,
@@ -436,7 +442,7 @@ def build_server(storage_root: str | None = None):
             {"resource_id": resource_id, "variant_b": variant_b, "traffic_split": traffic_split},
         )
 
-    @mcp.tool(name="learn.rollback")
+    @mcp.tool(name="learn.rollback", annotations=_DX)
     async def learn_rollback(
         resource_type: str,
         resource_id: str,
@@ -451,11 +457,11 @@ def build_server(storage_root: str | None = None):
             },
         )
 
-    @mcp.tool(name="learn.skills")
+    @mcp.tool(name="learn.skills", annotations=_RO)
     async def learn_skills(query: str) -> dict[str, Any]:
         return await _call("learn.skills", {"query": query})
 
-    @mcp.tool(name="learn.telemetry")
+    @mcp.tool(name="learn.telemetry", annotations=_RW)
     async def learn_telemetry(
         lesson_id: str,
         run_id: str | None = None,

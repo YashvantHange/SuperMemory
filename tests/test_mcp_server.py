@@ -131,6 +131,34 @@ async def test_mcp_stdio_lists_and_calls_tools(tmp_path):
             assert skills_data["skills"][0]["skill_id"] == skill_data["id"]
 
 
+@pytest.mark.anyio
+async def test_mcp_tools_have_safety_annotations(tmp_path):
+    env = os.environ.copy()
+    env["PYTHONPATH"] = os.pathsep.join([str(ROOT / "src"), str(ROOT / "packages"), str(ROOT)])
+    params = StdioServerParameters(
+        command=sys.executable,
+        args=[
+            "-m",
+            "supermemory_mcp.server",
+            "--storage",
+            str(tmp_path / ".supermemory"),
+            "--transport",
+            "stdio",
+        ],
+        env=env,
+    )
+
+    async with stdio_client(params) as (read, write):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+            tools = await session.list_tools()
+            assert len(tools.tools) == 29
+            for tool in tools.tools:
+                assert tool.annotations is not None, f"{tool.name} missing annotations"
+                assert tool.annotations.readOnlyHint is not None
+                assert tool.annotations.destructiveHint is not None
+
+
 @pytest.fixture
 def anyio_backend():
     return "asyncio"

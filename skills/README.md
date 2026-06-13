@@ -18,6 +18,8 @@ python scripts/sync_skills.py
 
 ## Install
 
+Skills ship in the same repo as the MCP server and are bundled in the `supermemory-agent` PyPI wheel.
+
 ### Cursor (project)
 
 Already included at `.cursor/skills/supermemory-agent-learning/`.  

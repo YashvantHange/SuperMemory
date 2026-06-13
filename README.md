@@ -4,6 +4,8 @@
 
 MCP-first learning memory layer for Claude, Cursor, and agent workflows. Captures distilled lessons from failures and corrections (not full transcripts), validates before storage, and improves agents over time through a closed-loop cycle.
 
+**Monorepo:** MCP server, agent skills (`skills/supermemory-agent-learning/SKILL.md`), REST API, Python SDK, and tests all live in [this repository](https://github.com/YashvantHange/SuperMemory). The PyPI package ships the MCP server and bundled skills together.
+
 ## Install from PyPI (recommended for Claude / Cursor users)
 
 ```bash
@@ -16,6 +18,8 @@ Or with [uv](https://docs.astral.sh/uv/):
 ```bash
 uvx supermemory-agent --storage .supermemory --transport stdio
 ```
+
+After install, bundled agent skills are under `site-packages/skills/supermemory-agent-learning/` (copy to `.cursor/skills/` or `~/.cursor/skills/` as needed).
 
 ## Install from source (developers)
 
@@ -82,6 +86,7 @@ Restart Claude Desktop after editing the config.
 | **Cursor** | `.cursor/skills/supermemory-agent-learning/` | `~/.cursor/skills/supermemory-agent-learning/` |
 | **Claude Code** | `.claude/skills/supermemory-agent-learning/` | `~/.claude/skills/supermemory-agent-learning/` |
 | **Canonical source** | `skills/supermemory-agent-learning/` | edit here, then run `python scripts/sync_skills.py` |
+| **PyPI install** | `site-packages/skills/supermemory-agent-learning/` | bundled with `pip install supermemory-agent` |
 
 Mention **SuperMemory**, **agent learning**, or **MCP memory** in chat to load the skill.
 
