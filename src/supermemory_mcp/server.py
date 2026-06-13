@@ -521,6 +521,25 @@ def main() -> None:
     )
     parser.add_argument("--transport", choices=["stdio", "streamable-http"], default="stdio")
     args = parser.parse_args()
+
+    if args.transport == "stdio" and sys.stdin.isatty():
+        print(
+            "SuperMemory MCP server uses stdio transport and must be started by an MCP client "
+            "(Cursor, Claude Desktop, Claude Code), not run directly in a terminal.\n"
+            "\n"
+            "Add to your MCP config:\n"
+            '  "command": "supermemory-agent",\n'
+            '  "args": ["--storage", ".supermemory", "--transport", "stdio"]\n'
+            "\n"
+            "Examples: examples/cursor.mcp.json  |  examples/claude_desktop_config.json\n"
+            "\n"
+            "To run locally for testing, use HTTP transport instead:\n"
+            "  supermemory-agent --transport streamable-http\n"
+            "\n"
+            "Run supermemory-agent --help for all options."
+        )
+        raise SystemExit(0)
+
     build_server(args.storage).run(transport=args.transport)
 
 

@@ -1,14 +1,19 @@
-# SuperMemory MCP
+# SuperMemory
 
 <!-- mcp-name: io.github.YashvantHange/supermemory -->
 
-MCP-first learning memory layer for Claude, Cursor, and agent workflows. Captures distilled lessons from failures and corrections (not full transcripts), validates before storage, and improves agents over time through a closed-loop cycle.
+**MCP-first agent learning layer** for Claude, Cursor, and custom agent workflows.
 
-**Monorepo:** MCP server, agent skills (`skills/supermemory-agent-learning/SKILL.md`), REST API, Python SDK, and tests all live in [this repository](https://github.com/YashvantHange/SuperMemory). The PyPI package ships the MCP server and bundled skills together.
+SuperMemory captures **distilled lessons** from failures and corrections — not full conversation transcripts — validates them before storage, and improves agents over time through a closed-loop cycle.
 
-**Latest release:** [v0.2.4](https://github.com/YashvantHange/SuperMemory/releases/tag/v0.2.4) — each [GitHub Release](https://github.com/YashvantHange/SuperMemory/releases) includes wheel + sdist package assets.
+[![PyPI](https://img.shields.io/pypi/v/supermemory-agent)](https://pypi.org/project/supermemory-agent/)
+[![GitHub Release](https://img.shields.io/github/v/release/YashvantHange/SuperMemory)](https://github.com/YashvantHange/SuperMemory/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![MCP Registry](https://img.shields.io/badge/MCP-io.github.YashvantHange%2Fsupermemory-green)](https://registry.modelcontextprotocol.io)
 
-## Install from PyPI (recommended for Claude / Cursor users)
+---
+
+## Quick start
 
 ```bash
 pip install supermemory-agent
@@ -21,85 +26,141 @@ Or with [uv](https://docs.astral.sh/uv/):
 uvx supermemory-agent --storage .supermemory --transport stdio
 ```
 
-After install, bundled agent skills are under `site-packages/skills/supermemory-agent-learning/` (copy to `.cursor/skills/` or `~/.cursor/skills/` as needed).
+**Latest release:** [v0.2.4](https://github.com/YashvantHange/SuperMemory/releases/tag/v0.2.4) — wheel + sdist attached on every [GitHub Release](https://github.com/YashvantHange/SuperMemory/releases).
 
-## Install from GitHub Release
+---
 
-Download the wheel from [Releases](https://github.com/YashvantHange/SuperMemory/releases) (each release ships `supermemory_agent-{version}-py3-none-any.whl`):
+## What you get
+
+| Component | Description |
+|-----------|-------------|
+| **MCP server** | 29 tools + 4 resources over stdio (or streamable HTTP) |
+| **Agent skill** | `skills/supermemory-agent-learning/SKILL.md` — bundled in the PyPI package |
+| **Python SDK** | In-process integration via `uall_python` |
+| **REST API** | FastAPI server for remote / polyglot clients |
+| **Storage** | Local `.supermemory/` files by default; SQLite and PostgreSQL optional |
+
+Everything lives in one repo: MCP server, skills, SDK, REST API, tests, and release packages.
+
+---
+
+## Install
+
+### PyPI (recommended)
+
+```bash
+pip install supermemory-agent
+```
+
+After install, bundled skills are at `site-packages/skills/supermemory-agent-learning/`. Copy to your editor skills folder if needed.
+
+### GitHub Release (offline / pinned version)
+
+Each release ships installable assets:
 
 ```bash
 pip install https://github.com/YashvantHange/SuperMemory/releases/download/v0.2.4/supermemory_agent-0.2.4-py3-none-any.whl
-supermemory-agent --storage .supermemory --transport stdio
 ```
 
-## Install from source (developers)
+Browse all versions: [github.com/YashvantHange/SuperMemory/releases](https://github.com/YashvantHange/SuperMemory/releases)
+
+### From source (developers)
 
 ```bash
+git clone https://github.com/YashvantHange/SuperMemory.git
+cd SuperMemory
 pip install -e ".[dev]"
+python -m pytest tests/ -v
 ```
 
-## Run MCP server
+---
+
+## Configure MCP
+
+### Cursor
+
+Copy `examples/cursor.mcp.json` to `.cursor/mcp.json` in your project:
+
+```json
+{
+  "mcpServers": {
+    "supermemory": {
+      "command": "supermemory-agent",
+      "args": ["--storage", ".supermemory", "--transport", "stdio"]
+    }
+  }
+}
+```
+
+### Claude Desktop
+
+Merge `examples/claude_desktop_config.json` into:
+
+```
+%APPDATA%\Claude\claude_desktop_config.json
+```
+
+Restart Claude Desktop after saving.
+
+### Run manually
+
+Do **not** run `supermemory-agent` alone in a terminal — stdio mode expects JSON-RPC from an MCP client. Pressing Enter in the shell causes a JSON parse error.
 
 ```bash
-python -m supermemory_mcp.server --storage .supermemory --transport stdio
+# For local HTTP testing only:
+supermemory-agent --transport streamable-http
 ```
 
-Or via CLI entry point:
+When configured in Cursor or Claude Desktop, the client launches the server automatically over stdio.
+
+---
+
+## Agent skills (Cursor + Claude Code)
+
+| Source | Path |
+|--------|------|
+| **Canonical** (edit here) | `skills/supermemory-agent-learning/` |
+| **Cursor project** | `.cursor/skills/supermemory-agent-learning/` |
+| **Claude Code project** | `.claude/skills/supermemory-agent-learning/` |
+| **PyPI install** | `site-packages/skills/supermemory-agent-learning/` |
+
+After editing `skills/`, sync copies:
 
 ```bash
-supermemory-agent --storage .supermemory --transport stdio
+python scripts/sync_skills.py
 ```
 
-Streamable HTTP:
+Mention **SuperMemory**, **agent learning**, or **MCP memory** in chat to load the skill.
 
-```bash
-python -m supermemory_mcp.server --storage .supermemory --transport streamable-http
-```
+---
 
-## MCP tools (29 total)
-
-**GitHub-compatible core (13):** `retrieve`, `record_event`, `record_failure`, `record_correction`, `reflect`, `validate`, `process_promotions`, `report_outcome`, `get_policies`, `add_policy`, `add_skill`, `search_skills`, `get_skill`
-
-**Extended UALL (16):** `learn.run.start`, `learn.run.event`, `learn.run.end`, `learn.store`, `learn.retrieve`, `learn.reflect`, `learn.validate`, `learn.evaluate`, `learn.feedback`, `learn.improvements`, `learn.analytics`, `learn.policies`, `learn.experiment`, `learn.rollback`, `learn.skills`, `learn.telemetry`
-
-## MCP resources
-
-- `supermemory://policies/active`
-- `supermemory://lessons/{lesson_id}`
-- `supermemory://memory/{lesson_id}/provenance`
-- `supermemory://skills/{skill_id}`
-
-## Agent learning loop
+## Learning loop
 
 ```
 retrieve → record_failure → reflect(event_ids) → validate → process_promotions
          → retrieve again → report_outcome
 ```
 
-## Cursor / Claude Desktop
+**Core rule:** capture workflow outcomes and distilled lessons only — never full transcripts. Default retrieval budget: `max_tokens=800`.
 
-### MCP server
+---
 
-Copy `examples/cursor.mcp.json` to `.cursor/mcp.json` (Cursor project).
+## MCP tools (29)
 
-For Claude Desktop, merge `examples/claude_desktop_config.json` into:
+**Core (13):** `retrieve`, `record_event`, `record_failure`, `record_correction`, `reflect`, `validate`, `process_promotions`, `report_outcome`, `get_policies`, `add_policy`, `add_skill`, `search_skills`, `get_skill`
 
-```
-%APPDATA%\Claude\claude_desktop_config.json
-```
+**Extended UALL (16):** `learn.run.start`, `learn.run.event`, `learn.run.end`, `learn.store`, `learn.retrieve`, `learn.reflect`, `learn.validate`, `learn.evaluate`, `learn.feedback`, `learn.improvements`, `learn.analytics`, `learn.policies`, `learn.experiment`, `learn.rollback`, `learn.skills`, `learn.telemetry`
 
-Restart Claude Desktop after editing the config.
+All tools include MCP safety annotations (`readOnlyHint` / `destructiveHint`).
 
-### Agent skills (Cursor + Claude Code)
+## MCP resources (4)
 
-| Platform | Project path | Global path |
-|----------|--------------|-------------|
-| **Cursor** | `.cursor/skills/supermemory-agent-learning/` | `~/.cursor/skills/supermemory-agent-learning/` |
-| **Claude Code** | `.claude/skills/supermemory-agent-learning/` | `~/.claude/skills/supermemory-agent-learning/` |
-| **Canonical source** | `skills/supermemory-agent-learning/` | edit here, then run `python scripts/sync_skills.py` |
-| **PyPI install** | `site-packages/skills/supermemory-agent-learning/` | bundled with `pip install supermemory-agent` |
+- `supermemory://policies/active`
+- `supermemory://lessons/{lesson_id}`
+- `supermemory://memory/{lesson_id}/provenance`
+- `supermemory://skills/{skill_id}`
 
-Mention **SuperMemory**, **agent learning**, or **MCP memory** in chat to load the skill.
+---
 
 ## Python SDK
 
@@ -120,40 +181,60 @@ with client.run(workflow_id="pdf-pipeline", step="planner", namespace="team:eng"
 python -m uall_server
 ```
 
-Server runs at `http://localhost:8000`. See `api/openapi.yaml`.
+Server: `http://localhost:8000` — see `api/openapi.yaml`.
+
+---
 
 ## Storage
 
-| Tier | Backend | Default path |
-|------|---------|--------------|
+| Tier | Backend | Config |
+|------|---------|--------|
 | Default | `.supermemory/` JSON files | `SUPERMEMORY_STORAGE_PATH` or `UALL_DATA_DIR` |
 | Optional | SQLite | `UALL_STORAGE_BACKEND=sqlite` |
-| Enterprise | PostgreSQL + stubs | `UALL_STORAGE_BACKEND=postgres` |
+| Enterprise | PostgreSQL | `UALL_STORAGE_BACKEND=postgres` |
+
+---
+
+## Project layout
+
+```
+SuperMemory/
+├── src/supermemory_mcp/          # MCP server (29 tools, 4 resources)
+├── skills/supermemory-agent-learning/   # Agent skill (SKILL.md)
+├── packages/uall/                # Core learning engine
+├── packages/uall_python/         # Python SDK
+├── packages/uall_server/         # REST API
+├── examples/                     # Cursor + Claude Desktop MCP configs
+├── tests/                        # 74 tests incl. stdio MCP transport
+└── docs/                         # Publishing, releases, privacy
+```
+
+---
 
 ## Tests
 
 ```bash
-python tests/run_all.py              # full suite (pytest + agent demos)
-python -m pytest tests/ -v           # all unit/integration tests
+python -m pytest tests/ -v
 python -m pytest tests/test_mcp_server.py -v   # real stdio MCP transport
-python -m pytest tests/test_core.py -v         # GitHub-compatible closed loop
+python -m pytest tests/test_core.py -v         # closed-loop integration
 ```
+
+---
+
+## Docs
+
+| Doc | Purpose |
+|-----|---------|
+| [docs/RELEASES.md](docs/RELEASES.md) | Release checklist — every tag ships wheel + sdist |
+| [docs/PUBLISHING.md](docs/PUBLISHING.md) | PyPI, MCP Registry, Cursor & Claude directories |
+| [PRIVACY.md](PRIVACY.md) | Privacy policy |
+| [skills/README.md](skills/README.md) | Agent skill install paths |
+
+**MCP Registry name:** `io.github.YashvantHange/supermemory`  
+**PyPI package:** `supermemory-agent`
+
+---
 
 ## License
 
 MIT — see [LICENSE](LICENSE)
-
-## Releases
-
-Every version is published to [GitHub Releases](https://github.com/YashvantHange/SuperMemory/releases) with **wheel + sdist** attached, then synced to PyPI and the MCP Registry via CI.
-
-```bash
-# Maintainer: after bumping pyproject.toml + server.json
-python scripts/release.py --title "v0.2.4 — short summary of changes"
-```
-
-See [docs/RELEASES.md](docs/RELEASES.md) for the full release checklist.
-
-## Publish / list in directories
-
-See [docs/PUBLISHING.md](docs/PUBLISHING.md) for MCP Registry, Cursor Directory, and Claude Connectors Directory submission steps.

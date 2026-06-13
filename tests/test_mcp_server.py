@@ -162,3 +162,16 @@ async def test_mcp_tools_have_safety_annotations(tmp_path):
 @pytest.fixture
 def anyio_backend():
     return "asyncio"
+
+
+def test_stdio_prints_help_when_run_in_interactive_terminal(monkeypatch, capsys):
+    monkeypatch.setattr(sys.stdin, "isatty", lambda: True)
+    monkeypatch.setattr(sys, "argv", ["supermemory-agent"])
+    with pytest.raises(SystemExit) as exc:
+        from supermemory_mcp.server import main
+
+        main()
+    assert exc.value.code == 0
+    out = capsys.readouterr().out
+    assert "MCP client" in out
+    assert "streamable-http" in out
