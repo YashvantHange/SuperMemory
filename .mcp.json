@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "supermemory": {
-      "command": "supermemory-agent-mcp",
+      "command": "supermemory-agent",
       "args": ["--storage", ".supermemory", "--transport", "stdio"],
       "env": {
         "SUPERMEMORY_STORAGE_PATH": ".supermemory"

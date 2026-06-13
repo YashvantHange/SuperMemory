@@ -16,7 +16,7 @@ def test_server_json_exists_and_valid():
     assert data["name"] == MCP_NAME
     assert len(data["description"]) <= 100
     assert data["packages"][0]["registryType"] == "pypi"
-    assert data["packages"][0]["identifier"] == "supermemory-agent-mcp"
+    assert data["packages"][0]["identifier"] == "supermemory-agent"
 
 
 def test_readme_has_mcp_name_marker():
