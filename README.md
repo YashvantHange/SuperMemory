@@ -7,14 +7,14 @@ MCP-first learning memory layer for Claude, Cursor, and agent workflows. Capture
 ## Install from PyPI (recommended for Claude / Cursor users)
 
 ```bash
-pip install supermemory-mcp
-supermemory-mcp --storage .supermemory --transport stdio
+pip install supermemory-agent-mcp
+supermemory-agent-mcp --storage .supermemory --transport stdio
 ```
 
 Or with [uv](https://docs.astral.sh/uv/):
 
 ```bash
-uvx supermemory-mcp --storage .supermemory --transport stdio
+uvx supermemory-agent-mcp --storage .supermemory --transport stdio
 ```
 
 ## Install from source (developers)
@@ -32,7 +32,7 @@ python -m supermemory_mcp.server --storage .supermemory --transport stdio
 Or via CLI entry point:
 
 ```bash
-supermemory-mcp --storage .supermemory --transport stdio
+supermemory-agent-mcp --storage .supermemory --transport stdio
 ```
 
 Streamable HTTP:
