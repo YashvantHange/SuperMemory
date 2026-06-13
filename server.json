@@ -3,7 +3,7 @@
   "name": "io.github.YashvantHange/supermemory",
   "title": "SuperMemory",
   "description": "MCP-first agent learning: capture failures, validate lessons, retrieve context, improve.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "websiteUrl": "https://github.com/YashvantHange/SuperMemory",
   "repository": {
     "url": "https://github.com/YashvantHange/SuperMemory",
@@ -14,7 +14,7 @@
       "registryType": "pypi",
       "registryBaseUrl": "https://pypi.org",
       "identifier": "supermemory-agent-mcp",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "runtimeHint": "supermemory-agent-mcp",
       "transport": {
         "type": "stdio"

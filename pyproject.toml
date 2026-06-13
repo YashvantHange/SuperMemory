@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "supermemory-agent-mcp"
-version = "0.2.1"
+version = "0.2.2"
 description = "SuperMemory: MCP-first learning memory layer for Claude, Cursor, and agent workflows"
 readme = "README.md"
 requires-python = ">=3.10"
