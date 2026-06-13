@@ -513,6 +513,48 @@ def build_server(storage_root: str | None = None):
     return mcp
 
 
+def _print_interactive_terminal_help() -> None:
+    msg = """
+================================================================================
+  SuperMemory MCP — cannot run directly in CMD / PowerShell (stdio mode)
+================================================================================
+
+This server expects JSON-RPC messages from an MCP client on stdin.
+Running it in a terminal and pressing Enter causes errors like:
+
+  Invalid JSON: EOF while parsing a value
+
+That is expected — your install is fine.
+
+WHAT TO DO INSTEAD
+------------------
+1) Use with Cursor or Claude Desktop (recommended)
+   Add to your MCP config (.cursor/mcp.json or claude_desktop_config.json):
+
+     "supermemory-agent-learning": {
+       "command": "supermemory-agent",
+       "args": ["--storage", ".supermemory", "--transport", "stdio"]
+     }
+
+   Then restart the app. The client starts the server — do not run it in CMD.
+
+   Config examples in this repo:
+     examples/cursor.mcp.json
+     examples/claude_desktop_config.json
+
+2) Test locally with HTTP transport:
+
+     supermemory-agent --transport streamable-http
+
+3) See all options:
+
+     supermemory-agent --help
+
+Docs: https://github.com/YashvantHange/SuperMemory
+"""
+    print(msg.strip(), file=sys.stderr)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run the SuperMemory MCP server.")
     parser.add_argument(
@@ -523,22 +565,8 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.transport == "stdio" and sys.stdin.isatty():
-        print(
-            "SuperMemory MCP server uses stdio transport and must be started by an MCP client "
-            "(Cursor, Claude Desktop, Claude Code), not run directly in a terminal.\n"
-            "\n"
-            "Add to your MCP config:\n"
-            '  "command": "supermemory-agent",\n'
-            '  "args": ["--storage", ".supermemory", "--transport", "stdio"]\n'
-            "\n"
-            "Examples: examples/cursor.mcp.json  |  examples/claude_desktop_config.json\n"
-            "\n"
-            "To run locally for testing, use HTTP transport instead:\n"
-            "  supermemory-agent --transport streamable-http\n"
-            "\n"
-            "Run supermemory-agent --help for all options."
-        )
-        raise SystemExit(0)
+        _print_interactive_terminal_help()
+        raise SystemExit(1)
 
     build_server(args.storage).run(transport=args.transport)
 

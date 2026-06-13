@@ -171,7 +171,8 @@ def test_stdio_prints_help_when_run_in_interactive_terminal(monkeypatch, capsys)
         from supermemory_mcp.server import main
 
         main()
-    assert exc.value.code == 0
-    out = capsys.readouterr().out
-    assert "MCP client" in out
-    assert "streamable-http" in out
+    assert exc.value.code == 1
+    err = capsys.readouterr().err
+    assert "cannot run directly in CMD" in err
+    assert "Invalid JSON" in err
+    assert "streamable-http" in err
