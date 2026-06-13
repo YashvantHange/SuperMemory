@@ -28,8 +28,10 @@ README includes the PyPI ownership marker:
 ### One-time setup
 
 1. Create a [PyPI account](https://pypi.org/account/register/) and API token.
-2. Add GitHub repo secret: `PYPI_API_TOKEN` (Settings → Secrets → Actions).
-3. Install publisher CLI locally (optional):
+2. Add GitHub repo secret: `PYPI_API_TOKEN`  
+   GitHub → **Settings → Secrets and variables → Actions → New repository secret**
+3. (Optional) Configure [PyPI trusted publishing](https://docs.pypi.org/trusted-publishers/) for GitHub Actions OIDC instead of a token.
+4. Install publisher CLI locally (optional):
 
    ```bash
    npm install -g mcp-publisher
