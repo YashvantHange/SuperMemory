@@ -10,4 +10,4 @@ if (-not (Test-Path (Join-Path $Root ".git"))) {
 
 Copy-Item $HookSrc $HookDst -Force
 Write-Host "Installed prepare-commit-msg hook -> $HookDst"
-Write-Host "Cursor co-author lines will be removed from future commits."
+Write-Host "Configured co-author label from .git-coauthor (edit COAUTHOR_NAME to customize)."

@@ -11,3 +11,4 @@ When creating git commits in this repo:
 - Never add `Made-with: Cursor` or any other Cursor attribution trailer.
 - Do not use `git commit --trailer` for Cursor attribution.
 - Use only the user's identity as author.
+- If a co-author line is required, use the label from `.git-coauthor` (default: **SuperMemory Agent**).

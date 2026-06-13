@@ -1,0 +1,9 @@
+# Custom co-author label when Cursor adds its default attribution.
+# The git hook replaces "Co-authored-by: Cursor <cursoragent@cursor.com>"
+# with the name below before the commit is finalized.
+#
+# Use your verified GitHub email so GitHub still links commits to your profile.
+# Set COAUTHOR_NAME empty to remove co-author lines entirely instead.
+
+COAUTHOR_NAME="SuperMemory Agent"
+COAUTHOR_EMAIL="yashvanthange420@gmail.com"

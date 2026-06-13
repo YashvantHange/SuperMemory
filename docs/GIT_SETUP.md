@@ -49,7 +49,34 @@ Co-authored-by: Cursor <cursoragent@cursor.com>
 
 GitHub then shows **cursoragent** as a second committer (`yashvanthange` + `cursoragent`).
 
-### Stop it (recommended)
+**You cannot rename `cursoragent` inside Cursor settings** — that name is fixed by Cursor.  
+This repo renames it via `.git-coauthor` + a git hook.
+
+### Custom agent name (this repo)
+
+Edit `.git-coauthor` in the repo root:
+
+```bash
+COAUTHOR_NAME="SuperMemory Agent"
+COAUTHOR_EMAIL="yashvanthange420@gmail.com"
+```
+
+Install or refresh the hook:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/install_git_hooks.ps1
+```
+
+When Cursor adds its default co-author line, the hook replaces it with:
+
+```
+Co-authored-by: SuperMemory Agent <yashvanthange420@gmail.com>
+```
+
+Use your verified GitHub email so commits still link to your profile.  
+To show **only your name** (no co-author), set `COAUTHOR_NAME=""` in `.git-coauthor`.
+
+### Stop Cursor attribution (recommended)
 
 1. Open **Cursor Settings → Agents → Attribution**
 2. Turn **off Commit Attribution** (and PR Attribution if you prefer)
@@ -73,7 +100,7 @@ If attribution still appears, install the local hook:
 powershell -ExecutionPolicy Bypass -File scripts/install_git_hooks.ps1
 ```
 
-This removes `cursoragent@cursor.com` lines before each commit is finalized.
+This removes or renames `cursoragent@cursor.com` lines before each commit is finalized (see `.git-coauthor`).
 
 ### Fix an already-pushed commit
 

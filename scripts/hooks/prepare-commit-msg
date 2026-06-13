@@ -1,7 +1,35 @@
 #!/usr/bin/env bash
-# Strips Cursor co-author lines from commit messages (local hook).
-MSG_FILE="$1"
-if [ -f "$MSG_FILE" ]; then
+# Rewrites Cursor co-author attribution using .git-coauthor (repo root).
+set -euo pipefail
+
+MSG_FILE="${1:?missing commit message file}"
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+CONFIG="$ROOT/.git-coauthor"
+
+COAUTHOR_NAME=""
+COAUTHOR_EMAIL=""
+
+if [ -f "$CONFIG" ]; then
+  # shellcheck disable=SC1090
+  source "$CONFIG"
+fi
+
+if [ ! -f "$MSG_FILE" ]; then
+  exit 0
+fi
+
+if [ -z "${COAUTHOR_NAME:-}" ]; then
   sed -i '/cursoragent@cursor\.com/d' "$MSG_FILE" 2>/dev/null || \
   sed -i '' '/cursoragent@cursor\.com/d' "$MSG_FILE" 2>/dev/null || true
+  exit 0
+fi
+
+REPLACEMENT="Co-authored-by: ${COAUTHOR_NAME} <${COAUTHOR_EMAIL}>"
+
+if grep -q 'cursoragent@cursor\.com' "$MSG_FILE" 2>/dev/null; then
+  sed -i "s|^Co-authored-by: Cursor <cursoragent@cursor.com>|${REPLACEMENT}|" "$MSG_FILE" 2>/dev/null || \
+  sed -i '' "s|^Co-authored-by: Cursor <cursoragent@cursor.com>|${REPLACEMENT}|" "$MSG_FILE" 2>/dev/null || true
+else
+  # Cursor attribution disabled — do not add a co-author unless Cursor injected one.
+  :
 fi
