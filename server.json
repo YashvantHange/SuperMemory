@@ -1,0 +1,36 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.yashvanthange/supermemory",
+  "title": "SuperMemory",
+  "description": "MCP-first agent learning: capture failures, validate lessons, retrieve context, improve.",
+  "version": "0.2.0",
+  "websiteUrl": "https://github.com/YashvantHange/SuperMemory",
+  "repository": {
+    "url": "https://github.com/YashvantHange/SuperMemory",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "pypi",
+      "registryBaseUrl": "https://pypi.org",
+      "identifier": "supermemory-mcp",
+      "version": "0.2.0",
+      "runtimeHint": "supermemory-mcp",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "SUPERMEMORY_STORAGE_PATH",
+          "description": "Local directory for .supermemory file storage",
+          "default": ".supermemory"
+        },
+        {
+          "name": "UALL_DATA_DIR",
+          "description": "Legacy alias for SUPERMEMORY_STORAGE_PATH",
+          "default": ".supermemory"
+        }
+      ]
+    }
+  ]
+}

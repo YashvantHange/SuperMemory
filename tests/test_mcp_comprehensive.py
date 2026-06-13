@@ -20,7 +20,7 @@ sys.path.insert(0, str(ROOT / "packages"))
 from uall_mcp.handlers import TOOLS, handle_tool, reset_service
 from uall_mcp.client import UALLMCPClient
 
-SKILL_PATH = ROOT / ".cursor" / "skills" / "uall-agent-learning" / "SKILL.md"
+SKILL_PATH = ROOT / "skills" / "supermemory-agent-learning" / "SKILL.md"
 MD_AGENTS_DIR = ROOT / "examples" / "mcp_agents" / "agents"
 
 ALL_TOOLS = [
@@ -73,10 +73,20 @@ class TestToolRegistry:
             assert "inputSchema" in t
             assert t["inputSchema"]["type"] == "object"
 
+    def test_claude_and_cursor_skills_exist(self):
+        claude_skill = ROOT / ".claude" / "skills" / "supermemory-agent-learning" / "SKILL.md"
+        cursor_skill = ROOT / ".cursor" / "skills" / "supermemory-agent-learning" / "SKILL.md"
+        canonical = ROOT / "skills" / "supermemory-agent-learning" / "SKILL.md"
+        assert canonical.exists()
+        assert cursor_skill.exists()
+        assert claude_skill.exists()
+
     def test_skill_documents_mcp_tools(self):
         assert SKILL_PATH.exists()
         skill = SKILL_PATH.read_text(encoding="utf-8")
         for tool in ["learn.retrieve", "learn.reflect", "learn.telemetry", "learn.validate"]:
+            assert tool in skill
+        for tool in ["retrieve", "record_failure", "validate", "process_promotions"]:
             assert tool in skill
 
 
@@ -421,7 +431,7 @@ class TestMarkdownAgents:
 
     def test_planner_md_has_skill_reference(self):
         text = (MD_AGENTS_DIR / "planner.md").read_text(encoding="utf-8")
-        assert "uall-agent-learning" in text
+        assert "supermemory-agent-learning" in text
 
     def test_planner_md_tool_order_matches_skill(self):
         text = (MD_AGENTS_DIR / "planner.md").read_text(encoding="utf-8")

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "supermemory": {
+      "command": "supermemory-mcp",
+      "args": ["--storage", ".supermemory", "--transport", "stdio"],
+      "env": {
+        "SUPERMEMORY_STORAGE_PATH": ".supermemory"
+      }
+    }
+  }
+}

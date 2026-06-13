@@ -23,4 +23,4 @@
 
 ## Skill reference
 
-Follow `.cursor/skills/uall-agent-learning/SKILL.md` — selective capture only, no full transcripts.
+Follow `skills/supermemory-agent-learning/SKILL.md` — selective capture only, no full transcripts.

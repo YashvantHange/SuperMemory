@@ -1,8 +1,23 @@
-# SuperMemory — Universal Agent Learning Layer
+# SuperMemory MCP
+
+<!-- mcp-name: io.github.yashvanthange/supermemory -->
 
 MCP-first learning memory layer for Claude, Cursor, and agent workflows. Captures distilled lessons from failures and corrections (not full transcripts), validates before storage, and improves agents over time through a closed-loop cycle.
 
-## Install
+## Install from PyPI (recommended for Claude / Cursor users)
+
+```bash
+pip install supermemory-mcp
+supermemory-mcp --storage .supermemory --transport stdio
+```
+
+Or with [uv](https://docs.astral.sh/uv/):
+
+```bash
+uvx supermemory-mcp --storage .supermemory --transport stdio
+```
+
+## Install from source (developers)
 
 ```bash
 pip install -e ".[dev]"
@@ -48,7 +63,27 @@ retrieve → record_failure → reflect(event_ids) → validate → process_prom
 
 ## Cursor / Claude Desktop
 
-Copy `examples/cursor.mcp.json` to `.cursor/mcp.json` (project) or use `examples/cursor_mcp/mcp.json`.
+### MCP server
+
+Copy `examples/cursor.mcp.json` to `.cursor/mcp.json` (Cursor project).
+
+For Claude Desktop, merge `examples/claude_desktop_config.json` into:
+
+```
+%APPDATA%\Claude\claude_desktop_config.json
+```
+
+Restart Claude Desktop after editing the config.
+
+### Agent skills (Cursor + Claude Code)
+
+| Platform | Project path | Global path |
+|----------|--------------|-------------|
+| **Cursor** | `.cursor/skills/supermemory-agent-learning/` | `~/.cursor/skills/supermemory-agent-learning/` |
+| **Claude Code** | `.claude/skills/supermemory-agent-learning/` | `~/.claude/skills/supermemory-agent-learning/` |
+| **Canonical source** | `skills/supermemory-agent-learning/` | edit here, then run `python scripts/sync_skills.py` |
+
+Mention **SuperMemory**, **agent learning**, or **MCP memory** in chat to load the skill.
 
 ## Python SDK
 
@@ -91,3 +126,7 @@ python -m pytest tests/test_core.py -v         # GitHub-compatible closed loop
 ## License
 
 MIT — see [LICENSE](LICENSE)
+
+## Publish / list in directories
+
+See [docs/PUBLISHING.md](docs/PUBLISHING.md) for MCP Registry, Cursor Directory, and Claude Connectors Directory submission steps.

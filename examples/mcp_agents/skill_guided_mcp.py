@@ -1,5 +1,5 @@
 """
-Skill-guided MCP test — follows uall-agent-learning skill checklist via MCP tools.
+Skill-guided MCP test — follows supermemory-agent-learning skill checklist via MCP tools.
 """
 
 import asyncio
@@ -9,11 +9,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "packages"))
 
 from uall_mcp.client import UALLMCPClient
 
-SKILL_PATH = ROOT / ".cursor" / "skills" / "uall-agent-learning" / "SKILL.md"
+SKILL_PATH = ROOT / "skills" / "supermemory-agent-learning" / "SKILL.md"
 
 CHECKLIST = [
     "learn.run.start",

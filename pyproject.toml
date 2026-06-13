@@ -12,8 +12,19 @@ license = "MIT"
 authors = [
     { name = "Yashvant Hange", email = "yashvanthange420@gmail.com" },
 ]
-dependencies = [
-    "pydantic>=2.5",
+keywords = ["mcp", "claude", "cursor", "agent-memory", "supermemory", "model-context-protocol"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [    "pydantic>=2.5",
     "fastapi>=0.109",
     "uvicorn[standard]>=0.27",
     "httpx>=0.26",
