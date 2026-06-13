@@ -9,7 +9,7 @@ This guide covers listing SuperMemory so **any Claude or Cursor user** can disco
 | `server.json` | Official [MCP Registry](https://registry.modelcontextprotocol.io) metadata |
 | `.mcp.json` | Cursor Directory auto-detection ([Open Plugins](https://open-plugins.com)) |
 | `examples/claude_desktop_config.json` | Claude Desktop MCP config |
-| `.github/workflows/publish.yml` | PyPI + MCP Registry on GitHub Release |
+| `.github/workflows/publish.yml` | Build wheel/sdist, attach to GitHub Release, PyPI + MCP Registry |
 
 README includes the PyPI ownership marker:
 
@@ -39,13 +39,27 @@ README includes the PyPI ownership marker:
 
 ### Publish (automated — recommended)
 
-1. Create a GitHub Release (tag e.g. `v0.2.0`).
-2. The `Publish PyPI and MCP Registry` workflow runs automatically.
-3. Verify:
+1. Bump `version` in `pyproject.toml` and `server.json`, commit, and push to `main`.
+2. Create a [GitHub Release](https://github.com/YashvantHange/SuperMemory/releases/new) with tag `vX.Y.Z` (must match version).
+3. The **Publish Release** workflow runs automatically:
+   - Builds `supermemory_agent-X.Y.Z-py3-none-any.whl` and `.tar.gz`
+   - Uploads both as release assets
+   - Publishes to PyPI
+   - Publishes to MCP Registry
+4. Verify:
 
    ```bash
    curl "https://registry.modelcontextprotocol.io/v0/servers?search=io.github.YashvantHange/supermemory"
+   pip index versions supermemory-agent
    ```
+
+Or use the helper:
+
+```bash
+python scripts/release.py --title "v0.2.4 — short summary"
+```
+
+See [docs/RELEASES.md](RELEASES.md) for the full checklist.
 
 ### Publish (manual)
 
@@ -160,7 +174,8 @@ cp -r skills/supermemory-agent-learning ~/.claude/skills/supermemory-agent-learn
 
 ## Checklist
 
-- [ ] GitHub Release `v0.2.0` with `PYPI_API_TOKEN` secret set
+- [ ] GitHub Release `v0.2.4` with wheel + sdist assets (see [RELEASES.md](RELEASES.md))
+- [ ] `PYPI_API_TOKEN` secret set for CI
 - [ ] MCP Registry shows `io.github.YashvantHange/supermemory`
 - [ ] Submit to [cursor.directory](https://cursor.directory/plugins/new)
 - [ ] Submit to [Claude Connectors Directory](https://claude.com/docs/connectors/building/submission)

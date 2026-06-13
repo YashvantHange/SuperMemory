@@ -6,6 +6,8 @@ MCP-first learning memory layer for Claude, Cursor, and agent workflows. Capture
 
 **Monorepo:** MCP server, agent skills (`skills/supermemory-agent-learning/SKILL.md`), REST API, Python SDK, and tests all live in [this repository](https://github.com/YashvantHange/SuperMemory). The PyPI package ships the MCP server and bundled skills together.
 
+**Latest release:** [v0.2.4](https://github.com/YashvantHange/SuperMemory/releases/tag/v0.2.4) — each [GitHub Release](https://github.com/YashvantHange/SuperMemory/releases) includes wheel + sdist package assets.
+
 ## Install from PyPI (recommended for Claude / Cursor users)
 
 ```bash
@@ -20,6 +22,15 @@ uvx supermemory-agent --storage .supermemory --transport stdio
 ```
 
 After install, bundled agent skills are under `site-packages/skills/supermemory-agent-learning/` (copy to `.cursor/skills/` or `~/.cursor/skills/` as needed).
+
+## Install from GitHub Release
+
+Download the wheel from [Releases](https://github.com/YashvantHange/SuperMemory/releases) (each release ships `supermemory_agent-{version}-py3-none-any.whl`):
+
+```bash
+pip install https://github.com/YashvantHange/SuperMemory/releases/download/v0.2.4/supermemory_agent-0.2.4-py3-none-any.whl
+supermemory-agent --storage .supermemory --transport stdio
+```
 
 ## Install from source (developers)
 
@@ -131,6 +142,17 @@ python -m pytest tests/test_core.py -v         # GitHub-compatible closed loop
 ## License
 
 MIT — see [LICENSE](LICENSE)
+
+## Releases
+
+Every version is published to [GitHub Releases](https://github.com/YashvantHange/SuperMemory/releases) with **wheel + sdist** attached, then synced to PyPI and the MCP Registry via CI.
+
+```bash
+# Maintainer: after bumping pyproject.toml + server.json
+python scripts/release.py --title "v0.2.4 — short summary of changes"
+```
+
+See [docs/RELEASES.md](docs/RELEASES.md) for the full release checklist.
 
 ## Publish / list in directories
 
