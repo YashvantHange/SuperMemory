@@ -14,7 +14,7 @@ This guide covers listing SuperMemory so **any Claude or Cursor user** can disco
 README includes the PyPI ownership marker:
 
 ```html
-<!-- mcp-name: io.github.yashvanthange/supermemory -->
+<!-- mcp-name: io.github.YashvantHange/supermemory -->
 ```
 
 ---
@@ -22,7 +22,7 @@ README includes the PyPI ownership marker:
 ## 1. Official MCP Registry (Claude + Cursor + all MCP clients)
 
 **Registry:** https://registry.modelcontextprotocol.io  
-**Server name:** `io.github.yashvanthange/supermemory`  
+**Server name:** `io.github.YashvantHange/supermemory`  
 **PyPI package:** `supermemory-agent-mcp`
 
 ### One-time setup
@@ -44,7 +44,7 @@ README includes the PyPI ownership marker:
 3. Verify:
 
    ```bash
-   curl "https://registry.modelcontextprotocol.io/v0/servers?search=io.github.yashvanthange/supermemory"
+   curl "https://registry.modelcontextprotocol.io/v0/servers?search=io.github.YashvantHange/supermemory"
    ```
 
 ### Publish (manual)
@@ -161,7 +161,7 @@ cp -r skills/supermemory-agent-learning ~/.claude/skills/supermemory-agent-learn
 ## Checklist
 
 - [ ] GitHub Release `v0.2.0` with `PYPI_API_TOKEN` secret set
-- [ ] MCP Registry shows `io.github.yashvanthange/supermemory`
+- [ ] MCP Registry shows `io.github.YashvantHange/supermemory`
 - [ ] Submit to [cursor.directory](https://cursor.directory/plugins/new)
 - [ ] Submit to [Claude Connectors Directory](https://claude.com/docs/connectors/building/submission)
 - [ ] Announce: `pip install supermemory-agent-mcp`

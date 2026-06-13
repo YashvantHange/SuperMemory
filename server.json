@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.yashvanthange/supermemory",
+  "name": "io.github.YashvantHange/supermemory",
   "title": "SuperMemory",
   "description": "MCP-first agent learning: capture failures, validate lessons, retrieve context, improve.",
   "version": "0.2.1",

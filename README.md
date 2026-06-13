@@ -1,6 +1,6 @@
 # SuperMemory MCP
 
-<!-- mcp-name: io.github.yashvanthange/supermemory -->
+<!-- mcp-name: io.github.YashvantHange/supermemory -->
 
 MCP-first learning memory layer for Claude, Cursor, and agent workflows. Captures distilled lessons from failures and corrections (not full transcripts), validates before storage, and improves agents over time through a closed-loop cycle.
 

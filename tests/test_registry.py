@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SERVER_JSON = ROOT / "server.json"
 README = ROOT / "README.md"
 
-MCP_NAME = "io.github.yashvanthange/supermemory"
+MCP_NAME = "io.github.YashvantHange/supermemory"
 
 
 def test_server_json_exists_and_valid():
