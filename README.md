@@ -225,6 +225,7 @@ python -m pytest tests/test_core.py -v         # closed-loop integration
 
 | Doc | Purpose |
 |-----|---------|
+| [docs/GIT_SETUP.md](docs/GIT_SETUP.md) | Fix commit author name/email on GitHub |
 | [docs/RELEASES.md](docs/RELEASES.md) | Release checklist — every tag ships wheel + sdist |
 | [docs/PUBLISHING.md](docs/PUBLISHING.md) | PyPI, MCP Registry, Cursor & Claude directories |
 | [PRIVACY.md](PRIVACY.md) | Privacy policy |

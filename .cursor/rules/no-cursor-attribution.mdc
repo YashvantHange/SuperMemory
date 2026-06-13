@@ -1,0 +1,13 @@
+---
+description: Git commits must not include Cursor co-author attribution
+alwaysApply: true
+---
+
+# No Cursor commit attribution
+
+When creating git commits in this repo:
+
+- Never add `Co-authored-by: Cursor <cursoragent@cursor.com>` to commit messages.
+- Never add `Made-with: Cursor` or any other Cursor attribution trailer.
+- Do not use `git commit --trailer` for Cursor attribution.
+- Use only the user's identity as author.

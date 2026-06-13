@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Strips Cursor co-author lines from commit messages (local hook).
+MSG_FILE="$1"
+if [ -f "$MSG_FILE" ]; then
+  sed -i '/cursoragent@cursor\.com/d' "$MSG_FILE" 2>/dev/null || \
+  sed -i '' '/cursoragent@cursor\.com/d' "$MSG_FILE" 2>/dev/null || true
+fi
